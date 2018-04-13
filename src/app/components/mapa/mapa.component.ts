@@ -32,23 +32,23 @@ export class MapaComponent implements OnInit {
     }
 
     let title: string = 'Mapa de google';
-    if (localStorage.getItem('marcadores') && localStorage.getItem('marcadores').length > 0) {
+    if (localStorage.getItem('marcadores')) {
       console.log("Cargar datos");
       this.marcadores = JSON.parse(localStorage.getItem('marcadores'));
-    } else {
-      if (navigator.geolocation) {
-        console.log("Si no hay datos");
+      if ( this.marcadores.length == 0 ) {
+        console.log("marcadores vacios");
         navigator.geolocation.getCurrentPosition( (position) => {
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
           const nuevoMarcador = new Marcador(this.lat, this.lng);
-          console.log("LAT: " + this.lat + " LONG " + this.lng);
+          console.log("CARGAR -- LAT: " + this.lat + " LONG " + this.lng);
           
           this.marcadores.push(nuevoMarcador);
           this.guardarStorage();
         });
-        // navigator.geolocation.getCurrentPosition(showPosition);
       }
+    } else {
+        console.log("Si no hay datos de marcadores");
     }
   }
 
@@ -72,11 +72,24 @@ export class MapaComponent implements OnInit {
   }  
 
   editarMarcador( marcador : Marcador ) {
-    
+
     let dialogRef = this.dialog.open( MapaEditarComponent, {
       width: '250px',
       data: { titulo: marcador.titulo, desc : marcador.desc }
     });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+      // console.log(result);
+      if (!result) {
+        return;
+      }
+      marcador.titulo = result.titulo;
+      marcador.desc = result.desc;
+      this.guardarStorage();
+      this.snackBar.open("Marcador actualizado", "Cerrar",{ duration: 1500});
+    });
+
   }
 
   guardarStorage() {
