@@ -1,0 +1,21 @@
+<mat-card>Card
+  <mat-card-content>
+    <h1>{{ title }}</h1>
+    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="15" [maxZoom]="19" [minZoom]="12">
+
+      <agm-marker *ngFor="let marcador of marcadores" [latitude]="marcador.lat" [longitude]="marcador.lng">   
+        <agm-info-window>
+          <strong>Titulo</strong>
+          <p>bla bla bla</p>
+          <div>
+            <button mat-raised-button color="primary">Modificar</button>
+            <button mat-raised-button color="warn">Borrar</button>
+          </div>
+        </agm-info-window>    
+      </agm-marker>
+      
+      <agm-marker [latitude]="lat - 0.005" [longitude]="lng -0.005">       
+      </agm-marker>
+    </agm-map>
+  </mat-card-content>
+</mat-card>
