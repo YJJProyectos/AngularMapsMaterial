@@ -58,20 +58,26 @@ export class MapaComponent implements OnInit {
     const nuevoMarcador = new Marcador(coords.lat, coords.lng);
     this.marcadores.push(nuevoMarcador);
     this.guardarStorage();
-    this.snackBar.open("Marcador agregado","Cerrar");
+    this.snackBar.open("Marcador agregado","Cerrar", {duration: 2000});
   }
 
   borrarMarcador(i : number) {
     console.log(i);
     this.marcadores.splice(i, 1);
     this.guardarStorage();
-    this.snackBar.open("Marcador Borrado","Cerrar");
+    this.snackBar.open("Marcador Borrado","Cerrar", {duration: 2000});
   }  
 
   guardarStorage() {
 
     localStorage.setItem('marcadores', JSON.stringify(this.marcadores));
 
+  }
+
+  borrarMarcadores() {
+    this.marcadores = [];
+    this.guardarStorage();
+    this.snackBar.open("Todos los marcadores borrados","Cerrar", {duration: 2000});
   }
 
 }
