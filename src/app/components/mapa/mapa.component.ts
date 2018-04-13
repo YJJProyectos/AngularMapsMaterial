@@ -1,6 +1,8 @@
+import { MapaEditarComponent } from './mapa-editar.component';
 import { Component, OnInit } from '@angular/core';
 import { Marcador } from '../../classes/marcador.class';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {MatDialog, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-mapa',
@@ -15,7 +17,8 @@ export class MapaComponent implements OnInit {
   mapa: boolean = false;
 
   constructor(
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) { 
 
     if (navigator.geolocation) {
@@ -67,6 +70,14 @@ export class MapaComponent implements OnInit {
     this.guardarStorage();
     this.snackBar.open("Marcador Borrado","Cerrar", {duration: 2000});
   }  
+
+  editarMarcador( marcador : Marcador ) {
+    
+    let dialogRef = this.dialog.open( MapaEditarComponent, {
+      width: '250px',
+      data: { titulo: marcador.titulo, desc : marcador.desc }
+    });
+  }
 
   guardarStorage() {
 
